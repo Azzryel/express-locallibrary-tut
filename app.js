@@ -9,8 +9,11 @@ var usersRouter = require('./routes/users');
 var catalogRouter = require('./routes/catalog');
 
 var compression = require('compression');
+var helmet = require('helmet');
 
 var app = express();
+
+app.use(helmet());
 
 //database
 //Set up mongoose connection
