@@ -101,7 +101,23 @@ exports.genre_create_post =  [
   ];
 // Display Genre delete form on GET.
 exports.genre_delete_get = function(req, res) {
-    res.send('NOT IMPLEMENTED: Genre delete GET');
+    
+  async.parallel({
+    genre: function(callback) {
+        Genre.findById(req.params.id).exec(callback)
+    },
+    genre_books: function(callback) {
+      Book.find({ 'genre': req.params.id }).exec(callback)
+    },
+}, function(err, results) {
+    if (err) { return next(err); }
+    if (results.gender==null) { // No results.
+        res.redirect('/catalog/gender');
+    }
+    // Successful, so render.
+    res.render('gender_delete', { title: 'Delete Gender', gender: results.gender, gender_books: results.gender_books } );
+});
+
 };
 
 // Handle Genre delete on POST.
